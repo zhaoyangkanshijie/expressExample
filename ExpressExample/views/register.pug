@@ -1,0 +1,10 @@
+﻿extends layout
+
+block content
+    form(action="/register",method="post",id="register")
+        p name:
+        input(type="text",name="name",id="name")
+        p password:
+        input(type="password",name="password",id="password")
+        ='\n'
+        input(type="submit",value="submit")
