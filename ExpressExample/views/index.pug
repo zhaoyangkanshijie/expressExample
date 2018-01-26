@@ -1,10 +1,14 @@
-﻿extends layout
+﻿extends layout.pug
 
 block content
     a(href="/login",id="login") login
     br
     a(href="/register",id="register") register
 
-    //p Hello #{name} !
     p= message
-    p= name
+    if name == undefined
+        p p Hello visitor
+    else
+        p p Hello #{name}
+
+    //script(src="/javascripts/jsonp.js")

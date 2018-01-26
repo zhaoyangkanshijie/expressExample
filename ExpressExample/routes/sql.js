@@ -11,7 +11,7 @@ function connectServer() {
 }
 
 function select(connection, name, callback) {
-    var sql = "select password from login where name = '" + name + "'";
+    var sql = "select password,time from login where name = '" + name + "'";
     console.log(sql);
     connection.query(sql, function (err, results, fields) {
         if (err) throw err;
@@ -19,8 +19,8 @@ function select(connection, name, callback) {
     });
 }
 
-function insert(connection, name, password, callback) {
-    var sql = "insert into login (name,password,isRemember,time) values ('" + name + "','" + password + "',0,now())";
+function insert(connection, name, password, timeByFormat, callback) {
+    var sql = "insert into login (name,password,time) values ('" + name + "','" + password + "','" + timeByFormat + "')";
     console.log(sql);
     connection.query(sql, function (err, rs) {
         if (err) {

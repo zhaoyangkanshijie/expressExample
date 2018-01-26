@@ -1,5 +1,7 @@
 ﻿'use strict';
 var express = require('express');
+var crypto = require('crypto');
+var moment = require('moment');
 var sql = require('../routes/sql');
 var router = express.Router();
 
@@ -34,9 +36,13 @@ router.route('/login')
             } else {
 
                 //密码加（解）密实现
-                //...
+                var md5 = crypto.createHash('md5');   //crypto模块功能是加密并生成各种散列,此处所示为MD5方式加密
+                //console.log("result:" + results[0].time);
+                var timeByFormat = moment(results[0].time).format('YYYY-MM-DD HH:mm:ss');
+                //console.log("moment:" + timeByFormat);
+                var encrypt = md5.update(req.body.password).update(timeByFormat).digest('hex');//加密后的密码
                 
-                if (results[0].password === req.body.password) {
+                if (results[0].password === encrypt) {
                     req.session.name = req.body.name;
                     //设置通过cookie-parser秘钥加密的cookie，写入客户端
                     res.locals.name = req.session.name;
@@ -72,15 +78,20 @@ router.route('/register')
         var connection = sql.connectServer();
 
         //密码加密实现
-        //...
+        var md5 = crypto.createHash('md5');   //crypto模块功能是加密并生成各种散列,此处所示为MD5方式加密
+        //var timeBySecond = moment();
+        var timeByFormat = moment().format('YYYY-MM-DD HH:mm:ss');
+        var encrypt = md5.update(req.body.password).update(timeByFormat).digest('hex');//加密后的密码
 
-        sql.insert(connection, req.body.name, req.body.password, function (msg) {
+        sql.insert(connection, req.body.name, encrypt, timeByFormat, function (msg) {
             if (msg != "ok") {
                 console.log("error:" + msg);
                 res.render('register', { "message": "name is used" });
             } else {
-                res.render('register', { "message": "ok" });
-                //res.redirect('/');
+                //res.render('register', { "message": "ok" });
+                req.session.name = req.body.name;
+                res.locals.name = req.session.name;
+                res.redirect('/');
             }
         });
     });
