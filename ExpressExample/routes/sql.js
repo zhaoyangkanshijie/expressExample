@@ -1,38 +1,36 @@
 ﻿var mysql = require('mysql');
 
 function connectServer() {
-    var client = mysql.createConnection({
+    var connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
         password: '123456',
         database: 'chat'
     })
-    return client;
+    return connection;
 }
 
-function insert(connection, name, password,callback) {
+function select(connection, name, callback) {
+    var sql = "select password from login where name = '" + name + "'";
+    console.log(sql);
+    connection.query(sql, function (err, results, fields) {
+        if (err) throw err;
+        callback(results);
+    });
+}
+
+function insert(connection, name, password, callback) {
     var sql = "insert into login (name,password,isRemember,time) values ('" + name + "','" + password + "',0,now())";
     console.log(sql);
     connection.query(sql, function (err, rs) {
         if (err) {
             console.log("error:" + err.message);
-            return err;
+            callback(err.message);
+        } else {
+            callback("ok");
         }
-        callback(err);
     });
 }
-
-function select(connection, name, password, callback) {
-    var sql = "select * from login";
-    console.log(sql);
-    client.query(sql, function (err, results, fields) {
-        if (err) throw err;
-
-        callback(results);
-    });
-}
-
-
 
 exports.connectServer = connectServer;
 exports.insert = insert;
