@@ -5,30 +5,28 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    
-    //if (req.cookies.islogin) {
-    //    req.session.islogin = req.cookies.islogin;
-    //}
-    //if (req.session.islogin) {
-    //    res.locals.islogin = req.session.islogin;
-    //}
-    //console.log(req.cookies.islogin);
-    res.render('index', { title: 'home', islogin: res.locals.islogin });
+    if (req.session.name) {
+        res.locals.name = req.session.name;
+    }
+    if (req.cookies.name) {
+        req.session.name = req.cookies.name;
+    }
+    res.render('index', { "title": 'home', "name": res.locals.name });
 });
 
 router.route('/login')
     .get(function (req, res) {
-        //if (req.session.islogin) {
-        //    res.locals.islogin = req.session.islogin;
-        //}
-
-        //if (req.cookies.islogin) {
-        //    req.session.islogin = req.cookies.islogin;
-        //}
-        res.render('login', { title: 'login', islogin: res.locals.islogin });
+        if (req.session.name) {
+            res.locals.name = req.session.name;
+        }
+        if (req.cookies.name) {
+            req.session.name = req.cookies.name;
+        }
+        res.render('login', { title: 'login', "name": res.locals.name });
     })
     .post(function (req, res) {
         var connection = sql.connectServer();
+        
         sql.select(connection, req.body.name, function (results) {
 
             if (results[0] === undefined) {
@@ -39,23 +37,26 @@ router.route('/login')
                 //...
                 
                 if (results[0].password === req.body.password) {
-                    //req.session.islogin = req.body.name;
-                    //res.locals.islogin = req.session.islogin;
+                    req.session.name = req.body.name;
+                    //设置通过cookie-parser秘钥加密的cookie，写入客户端
+                    res.locals.name = req.session.name;
+                    //记住密码交给浏览器，登录状态交给name
+                    //req.session.password = req.body.password;
+                    //res.locals.password = req.session.password;
 
-                    //console.log(req.session.islogin);
-                    //console.log(res.locals.islogin);
-
-                    ////记住密码
-                    //if (res.body.remember == "checked") {
+                    //记住密码
+                    //无需记住密码，直接通过cookie和session登录
+                    //if (req.body.remember != undefined) {
                     //    console.log("checked");
-                    //    res.cookie('islogin', { "name": res.body.name, "password": res.body.password }, { maxAge: 60000 });
+                    //    //response后，客户端cookie会保存明文内容，不安全，故用session保存，通过res.locals加密后，保存到客户端cookie
+                    //    //res.cookie('islogin', { "name": req.body.name, "password": req.body.password }, { maxAge: 60000 });
                     //} else {
                     //    console.log("not checked");
-                    //    res.cookie('islogin', { "name": res.body.name }, { maxAge: 60000 });
+                    //    //res.cookie('islogin', { "name": req.body.name }, { maxAge: 60000 });
                     //}
 
-                    //res.redirect('/');
-                    res.render('login', { "message": "ok" });
+                    res.redirect('/');
+                    //res.render('index', { "message": "ok", "name": res.locals.name });
                 } else {
                     res.render('login', { "message": "password invalid" });
                 }
