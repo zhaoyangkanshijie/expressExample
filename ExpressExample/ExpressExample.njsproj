@@ -34,6 +34,9 @@
     <Compile Include="public\bootstrap-3.3.7-dist\js\bootstrap.min.js" />
     <Compile Include="public\bootstrap-3.3.7-dist\js\npm.js" />
     <Compile Include="public\javascripts\jquery-3.3.1.js" />
+    <Compile Include="public\javascripts\jsonp.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\index.js" />
     <Compile Include="routes\sql.js">
       <SubType>Code</SubType>

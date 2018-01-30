@@ -1,0 +1,33 @@
+﻿extends layout.pug
+
+block title
+    title chat
+
+block styles
+    link(rel='stylesheet', href='/stylesheets/chat.css')
+
+block scripts
+    script(src="/javascripts/jquery-3.3.1.js")
+    script(src="/javascripts/socket.io.js")
+    script(src="/javascripts/client.js")
+
+block content
+    .main
+        .main-top socket.io demo
+        .main-body
+            section.chatRoomInfo
+                .info  当前共有<span class="chatNum">0</span>人在线。在线列表:&nbsp;<span class="chatList"></span>
+            
+            //section.chatRoomTip
+            //    div 子木加入到聊天室
+            //section.user.clearfix
+            //    span 子木
+            //    div 测试测试测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试
+            //section.server.clearfix
+            //    span 子木
+            //    div 测试测试测试
+            
+        .main-footer.clearfix
+            .input
+                input(type="text",name="msg",id="msg",value="")
+            button.send 发送

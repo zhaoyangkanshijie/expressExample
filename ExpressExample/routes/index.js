@@ -80,7 +80,7 @@ router.route('/register')
         //密码加密实现
         var md5 = crypto.createHash('md5');   //crypto模块功能是加密并生成各种散列,此处所示为MD5方式加密
         //var timeBySecond = moment();
-        var timeByFormat = moment().format('YYYY-MM-DD HH:mm:ss');
+        var timeByFormat = moment().format('YYYY-MM-DD HH:mm:ss');//moment库处理时间
         var encrypt = md5.update(req.body.password).update(timeByFormat).digest('hex');//加密后的密码
 
         sql.insert(connection, req.body.name, encrypt, timeByFormat, function (msg) {
