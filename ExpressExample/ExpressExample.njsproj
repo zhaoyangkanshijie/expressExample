@@ -30,17 +30,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="public\bootstrap-3.3.7-dist\js\bootstrap.js" />
+    <Compile Include="public\bootstrap-3.3.7-dist\js\bootstrap.min.js" />
+    <Compile Include="public\bootstrap-3.3.7-dist\js\npm.js" />
+    <Compile Include="public\javascripts\jquery-3.3.1.js" />
+    <Compile Include="public\javascripts\jsonp.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\index.js" />
+    <Compile Include="routes\sql.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\users.js" />
     <Content Include="package.json" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap-theme.css" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap-theme.css.map" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap-theme.min.css" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap-theme.min.css.map" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap.css" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap.css.map" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap.min.css" />
+    <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap.min.css.map" />
+    <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
     <Content Include="views\index.pug" />
     <Content Include="views\layout.pug" />
     <Content Include="views\error.pug" />
+    <Content Include="views\login.pug" />
+    <Content Include="views\register.pug">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="views\upload.pug" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
+    <Folder Include="public\bootstrap-3.3.7-dist\" />
+    <Folder Include="public\bootstrap-3.3.7-dist\css\" />
+    <Folder Include="public\bootstrap-3.3.7-dist\fonts\" />
+    <Folder Include="public\bootstrap-3.3.7-dist\js\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />

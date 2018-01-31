@@ -5,12 +5,27 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+var chat = require('./routes/chat');
+
+//传入了一个密钥加session id
+app.use(cookieParser("An"));
+//session使用就靠这个中间件
+app.use(session({
+    secret: 'an',// 用来对session id相关的cookie进行签名
+    resave: false,// 是否每次都重新保存会话，建议false
+    saveUninitialized: false,// 是否自动保存未初始化的会话，建议false
+    cookie: {
+        maxAge: 60 * 60 * 1000
+    }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,8 +39,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/users', users);
+app.use('/chat', chat);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -58,8 +74,81 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.set('port', process.env.PORT || 3000);
+function isInArray(arr, name) {
+    var inArray = false;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == name) {
+            inArray = true;
+            break;
+        }
+    }
+    return inArray;
+}
 
-var server = app.listen(app.get('port'), function () {
-    debug('Express server listening on port ' + server.address().port);
+function deleteByValue(arr, name) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == name) {
+            arr.splice(i, 1);
+            break;
+        }
+    }
+}
+
+//在线用户
+var onlineUser = [];
+var onlineCount = 0;
+
+io.on('connection', function (socket) {
+    console.log('新用户登录');
+
+    //监听新用户加入
+    socket.on('login', function (name) {
+        socket.name = name;
+        //检查用户在线列表
+        var inArray = isInArray(onlineUser, name);
+        if (!inArray) {
+            onlineUser.push(name);
+            //在线人数+1
+            onlineCount++;
+        }
+
+        //广播消息
+        io.emit('login', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
+        console.log(name + "加入了聊天室");
+    });
+
+    //监听用户退出
+    socket.on('disconnect', function () {
+        //将退出用户在在线列表删除
+        var inArray = isInArray(onlineUser, socket.name);
+        if (inArray) {
+            //退出用户信息
+            var name = socket.name;
+            //删除
+            deleteByValue(onlineUser, socket.name);
+            //在线人数-1
+            onlineCount--;
+            //广播消息
+            io.emit('logout', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
+            console.log(name + "退出了聊天室");
+        }
+    });
+
+    //监听用户发布聊天内容
+    socket.on('message', function (clientMessage) {
+        //向所有客户端广播发布的消息
+        io.emit('message', clientMessage);
+        console.log(clientMessage.name + '说：' + clientMessage.content);
+    });
+});
+
+
+
+//app.set('port', process.env.PORT || 3000);
+
+//var server = app.listen(app.get('port'), function () {
+//    debug('Express server listening on port ' + server.address().port);
+//});
+http.listen(3000, function () {
+    console.log('listening on *:3000');
 });

@@ -1,5 +1,16 @@
-﻿extends layout
+﻿extends layout.pug
 
 block content
-  h1= title
-  p Welcome to #{title}
+    a(href="/login",id="login") login
+    br
+    a(href="/register",id="register") register
+    br
+    a(href="/chat",id="chat") chat
+
+    p= message
+    if name == undefined
+        p p Hello visitor
+    else
+        p p Hello #{name}
+
+    //script(src="/javascripts/jsonp.js")
