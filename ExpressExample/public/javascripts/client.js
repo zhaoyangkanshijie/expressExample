@@ -29,23 +29,25 @@ window.onload = function () {
                 });
                 //发送消息
                 socket.on('message', function (clientMessage) {
+                    var message = encode10(clientMessage.content);
                     if (clientMessage.name == username) {
                         var MsgHtml = '<section class="user clearfix">'
                             + '<span>' + clientMessage.name + '</span>'
-                            + '<div>' + clientMessage.content + '</div>'
+                            + '<div>' + message + '</div>'
                             + '</section>';
                     } else {
                         var MsgHtml = '<section class="server clearfix">'
                             + '<span>' + clientMessage.name + '</span>'
-                            + '<div>' + clientMessage.content + '</div>'
+                            + '<div>' + message + '</div>'
                             + '</section>';
                     }
                     $('.main-body').append(MsgHtml);
                     $('.main-body').scrollTop(99999);
                 });
                 $('.send').click(function () {
-                    var content = $('input[name="msg"]').val();
+                    var content = $('input[name="msg"]').val().toString();
                     if (content) {
+                        content = encode8(content);
                         var clientMessage = {
                             'name': username,
                             'content': content
@@ -96,4 +98,33 @@ function updateMsg(serverInfo, action) {
     }
     $(".main-body").append(sysHtml);
     $('.main-body').scrollTop(99999);
+}
+
+function encode8(content) {
+    var result = "";
+    for (var i = 0; i < content.length; i++) {
+        result += String.fromCharCode(content.charCodeAt(i).toString(8));
+        //var str = content.charCodeAt(i);
+        //console.log("a的asc："+str);
+        //var ten2eight = str.toString(8);
+        //console.log("a的asc8进制数：" +ten2eight);
+        //var res = String.fromCharCode(ten2eight);
+        //console.log("a的asc8进制数当10进制："+res);
+
+        //var str2 = res.charCodeAt();
+        //console.log("a的asc10进制数当8进制数：" +str2);
+        //var eight2ten = parseInt(str2, 8);
+        //console.log("a的asc10进制数：" +eight2ten);
+        //var res2 = String.fromCharCode(eight2ten);
+        //console.log("a：" + res2);
+    }
+    return result;
+}
+
+function encode10(content) {
+    var result = "";
+    for (var i = 0; i < content.length; i++) {
+        result += String.fromCharCode(parseInt(content.charCodeAt(i), 8));
+    }
+    return result;
 }
