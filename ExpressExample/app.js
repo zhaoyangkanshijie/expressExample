@@ -99,22 +99,37 @@ var onlineUser = [];
 var onlineCount = 0;
 
 io.on('connection', function (socket) {
-    console.log('新用户登录');
 
     //监听新用户加入
     socket.on('login', function (name) {
-        socket.name = name;
-        //检查用户在线列表
-        var inArray = isInArray(onlineUser, name);
-        if (!inArray) {
-            onlineUser.push(name);
-            //在线人数+1
-            onlineCount++;
-        }
+        // socket.name = name;
+        // //检查用户在线列表
+        // var inArray = isInArray(onlineUser, name);
+        // if (!inArray) {
+        //     onlineUser.push(name);
+        //     //在线人数+1
+        //     onlineCount++;
+        // }
 
-        //广播消息
-        io.emit('login', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
-        console.log(name + "加入了聊天室");
+        // //广播消息
+        // io.emit('login', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
+        // console.log(name + "加入了聊天室");
+        if (onlineUser.indexOf(name) > -1) {
+            socket.emit('nickExisted');
+            socket.name = name;
+            io.emit('login', { onlineUser: onlineUser, onlineCount: onlineUser.length, user: name });
+        } else {
+            //socket.userIndex = users.length;
+            console.log('新用户正在登录');
+            socket.name = name;
+            onlineUser.push(name);
+            socket.emit('loginSuccess');
+            console.log('新用户登录成功');
+            console.log(name + "加入了聊天室");
+
+            //onlineCount++;
+            io.emit('login', { onlineUser: onlineUser, onlineCount: onlineUser.length, user: name });
+        };
     });
 
     //监听用户退出
