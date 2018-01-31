@@ -12,9 +12,15 @@ router.route('/').get(function (req, res) {
         name = req.session.name = req.cookies.name;
     }
     else {
-        res.redirect('login');
+        res.redirect('/login');
     }
-
+    //console.log(req.sessionID);
+    //req.sessionStore.post(req.body.name, function (error, session) {
+    //    // 如果session存在，表示用户已在其他地方登录
+    //    if (session) {
+    //        res.redirect('/');
+    //    }
+    //});
     res.render('chat');
 }).post(function (req, res) {
 
@@ -30,9 +36,15 @@ router.route('/getname').get(function (req, res) {
         name = req.session.name = req.cookies.name;
     }
     else {
-        res.redirect('login');
+        res.redirect('/login');
     }
-    res.send(name);
+
+    if (global.onlineUser.indexOf(name) > -1) {
+        res.send("");
+    }
+    else {
+        res.send(name);
+    }
 })
 
 

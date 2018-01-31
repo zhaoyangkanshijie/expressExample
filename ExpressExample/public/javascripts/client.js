@@ -12,48 +12,52 @@ window.onload = function () {
     $.ajax({
         url: '/chat/getname',
         type: 'get',
-        success: function (data) {
-            var username = data;
-            console.log(username);
-            //连接socket后端服务器
-            var socket = io.connect("ws://localhost:3000");
-            //通知用户有用户登录
-            socket.emit('login', username);
-            //监听新用户登录
-            socket.on('login', function (serverLoginInfo) {
-                updateMsg(serverLoginInfo, 'login');
-            });
-            //监听用户退出
-            socket.on('logout', function (serverLogoutInfo) {
-                updateMsg(serverLogoutInfo, 'logout');
-            });
-            //发送消息
-            socket.on('message', function (clientMessage) {
-                if (clientMessage.name == username) {
-                    var MsgHtml = '<section class="user clearfix">'
-                        + '<span>' + clientMessage.name + '</span>'
-                        + '<div>' + clientMessage.content + '</div>'
-                        + '</section>';
-                } else {
-                    var MsgHtml = '<section class="server clearfix">'
-                        + '<span>' + clientMessage.name + '</span>'
-                        + '<div>' + clientMessage.content + '</div>'
-                        + '</section>';
-                }
-                $('.main-body').append(MsgHtml);
-                $('.main-body').scrollTop(99999);
-            });
-            $('.send').click(function () {
-                var content = $('input[name="msg"]').val();
-                if (content) {
-                    var clientMessage = {
-                        'name': username,
-                        'content': content
+        success: function (username) {
+            if (username) {
+                console.log(username);
+                //连接socket后端服务器
+                var socket = io.connect("ws://localhost:3000", { 'force new connection': false });
+                //通知用户有用户登录
+                socket.emit('login', username);
+                //监听新用户登录
+                socket.on('login', function (serverLoginInfo) {
+                    updateMsg(serverLoginInfo, 'login');
+                });
+                //监听用户退出
+                socket.on('logout', function (serverLogoutInfo) {
+                    updateMsg(serverLogoutInfo, 'logout');
+                });
+                //发送消息
+                socket.on('message', function (clientMessage) {
+                    if (clientMessage.name == username) {
+                        var MsgHtml = '<section class="user clearfix">'
+                            + '<span>' + clientMessage.name + '</span>'
+                            + '<div>' + clientMessage.content + '</div>'
+                            + '</section>';
+                    } else {
+                        var MsgHtml = '<section class="server clearfix">'
+                            + '<span>' + clientMessage.name + '</span>'
+                            + '<div>' + clientMessage.content + '</div>'
+                            + '</section>';
                     }
-                    socket.emit('message', clientMessage);
-                    $('input[name="msg"]').val("");
-                }
-            });
+                    $('.main-body').append(MsgHtml);
+                    $('.main-body').scrollTop(99999);
+                });
+                $('.send').click(function () {
+                    var content = $('input[name="msg"]').val();
+                    if (content) {
+                        var clientMessage = {
+                            'name': username,
+                            'content': content
+                        }
+                        socket.emit('message', clientMessage);
+                        $('input[name="msg"]').val("");
+                    }
+                });
+            }
+            else {
+                window.close();
+            }
         },
         error: function (err) {
             console.log(err);

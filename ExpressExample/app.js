@@ -25,6 +25,9 @@ app.use(session({
     cookie: {
         maxAge: 60 * 60 * 1000
     }
+    //genid: function (req) {
+    //    return req.body.name; // 生成session的id
+    //}
 }));
 
 // view engine setup
@@ -95,8 +98,8 @@ function deleteByValue(arr, name) {
 }
 
 //在线用户
-var onlineUser = [];
-var onlineCount = 0;
+global.onlineUser = [];
+global.onlineCount = 0;
 
 io.on('connection', function (socket) {
     console.log('新用户登录');
@@ -111,7 +114,6 @@ io.on('connection', function (socket) {
             //在线人数+1
             onlineCount++;
         }
-
         //广播消息
         io.emit('login', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
         console.log(name + "加入了聊天室");
