@@ -97,4 +97,25 @@ router.route('/register')
     });
 
 
+//ajax
+router.route('/getname').get(function (req, res) {
+    var name;
+    if (req.session.name) {
+        name = res.locals.name = req.session.name;
+    }
+    else if (req.cookies.name) {
+        name = req.session.name = req.cookies.name;
+    }
+    else {
+        res.redirect('/login');
+    }
+
+    if (global.onlineUser.indexOf(name) > -1) {
+        res.send("");
+    }
+    else {
+        res.send(name);
+    }
+});
+
 module.exports = router;

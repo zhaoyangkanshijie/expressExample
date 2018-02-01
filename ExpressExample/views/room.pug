@@ -1,0 +1,34 @@
+﻿extends layout.pug
+
+block title
+    title room
+
+block styles
+    link(rel='stylesheet', href='/stylesheets/roomchat.css')
+
+block scripts
+    script(src="/javascripts/jquery-3.3.1.js")
+    script(src="/javascripts/socket.io.js")
+    script(src="/javascripts/roomclient.js")
+
+block content
+    span 昵称: 
+    span#userName
+    br
+    span 房间: 
+    span#roomID #{roomID}
+    br
+    span 当前在线人数: 
+    span#count #{users.length}
+    br
+    span 在线用户:  
+    #users #{users}
+
+    #msglog 
+
+    textarea#messageInput(name="message")
+
+    br
+
+    span 按Enter键发送
+    button#joinOrLeave 退出房间

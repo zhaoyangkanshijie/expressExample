@@ -10,7 +10,7 @@ $('.send').mouseup(function () {
 window.onload = function () {
     //获取用户名
     $.ajax({
-        url: '/chat/getname',
+        url: '/getname',
         type: 'get',
         success: function (username) {
             if (username) {
@@ -54,6 +54,21 @@ window.onload = function () {
                         }
                         socket.emit('message', clientMessage);
                         $('input[name="msg"]').val("");
+                    }
+                });
+                $('#msg').keydown(function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        var content = $('input[name="msg"]').val().toString();
+                        if (content) {
+                            content = encode8(content);
+                            var clientMessage = {
+                                'name': username,
+                                'content': content
+                            }
+                            socket.emit('message', clientMessage);
+                            $('input[name="msg"]').val("");
+                        }
                     }
                 });
             }

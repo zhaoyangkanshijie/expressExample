@@ -1,0 +1,17 @@
+﻿extends layout.pug
+
+block title
+    title roomchat
+
+block content
+    p hello #{name}
+
+    div
+      p 房间列表
+      ul
+        - for (var i = 1; i <= 10; i++)
+          li(id="room_"+i)
+            a(href="/roomchat/room_"+i,target="_blank") #{i+"号房间"}
+              
+
+            
