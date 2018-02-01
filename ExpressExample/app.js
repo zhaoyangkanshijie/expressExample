@@ -14,6 +14,7 @@ var io = require('socket.io')(http);
 var index = require('./routes/index');
 var users = require('./routes/users');
 var chat = require('./routes/chat');
+var upload = require("./routes/upload");
 
 //传入了一个密钥加session id
 app.use(cookieParser("An"));
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/chat', chat);
+app.use('/upload', upload);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -152,5 +154,5 @@ io.on('connection', function (socket) {
 //    debug('Express server listening on port ' + server.address().port);
 //});
 http.listen(3000, function () {
-    console.log('listening on *:3000');
+    //console.log('listening on *:3000');
 });
