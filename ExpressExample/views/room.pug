@@ -13,16 +13,16 @@ block scripts
 
 block content
     span 昵称: 
-    span#userName
+    span#userName= name
     br
     span 房间: 
-    span#roomID #{roomID}
+    span#roomID= roomID
     br
     span 当前在线人数: 
-    span#count #{users.length}
+    span#count 0
     br
     span 在线用户:  
-    #users #{users}
+    #users 
 
     #msglog 
 

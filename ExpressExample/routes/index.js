@@ -118,4 +118,31 @@ router.route('/getname').get(function (req, res) {
     }
 });
 
+//ajax
+router.route('/getname2').get(function (req, res) {
+    var name;
+    var roomID = req.query.roomID;
+    if (req.session.name) {
+        name = res.locals.name = req.session.name;
+    }
+    else if (req.cookies.name) {
+        name = req.session.name = req.cookies.name;
+    }
+    else {
+        res.redirect('/login');
+    }
+    
+    if (global.roomInfo[roomID] == undefined) {
+        res.send(name);
+    }
+    else {
+        if (global.roomInfo[roomID].indexOf(name) != -1) {
+            res.send("");
+        }
+        else {
+            res.send(name);
+        }
+    }
+});
+
 module.exports = router;

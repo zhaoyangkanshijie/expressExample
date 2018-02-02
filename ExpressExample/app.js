@@ -105,99 +105,109 @@ function deleteByValue(arr, name) {
 global.onlineUser = [];
 global.onlineCount = 0;
 
-io.on('connection', function (socket) {
-    console.log('新用户登录');
-
-    //监听新用户加入
-    socket.on('login', function (name) {
-        socket.name = name;
-        //检查用户在线列表
-        var inArray = isInArray(onlineUser, name);
-        if (!inArray) {
-            onlineUser.push(name);
-            //在线人数+1
-            onlineCount++;
-        }
-        //广播消息
-        io.emit('login', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
-        console.log(name + "加入了聊天室");
-    });
-
-    //监听用户退出
-    socket.on('disconnect', function () {
-        //将退出用户在在线列表删除
-        var inArray = isInArray(onlineUser, socket.name);
-        if (inArray) {
-            //退出用户信息
-            var name = socket.name;
-            //删除
-            deleteByValue(onlineUser, socket.name);
-            //在线人数-1
-            onlineCount--;
-            //广播消息
-            io.emit('logout', { onlineUser: onlineUser, onlineCount: onlineCount, user: name });
-            console.log(name + "退出了聊天室");
-        }
-    });
-
-    //监听用户发布聊天内容
-    socket.on('message', function (clientMessage) {
-        //向所有客户端广播发布的消息
-        io.emit('message', clientMessage);
-        console.log(clientMessage.name + '说：' + clientMessage.content);
-    });
-});
-
 // 房间用户名单
 global.roomInfo = [];
 
 io.on('connection', function (socket) {
-    // 获取请求建立socket连接的url
-    // 如: http://localhost:3000/room/room_1, roomID为room_1
+    console.log('新用户登录');
+
     var url = socket.request.headers.referer;
-    var splited = url.split('/');
-    var roomID = splited[splited.length - 1];   // 获取房间ID
-    var user = '';
+    if (url.indexOf("room") == -1) {
+        //监听新用户加入
+        socket.on('login', function (name) {
+            socket.name = name;
+            //检查用户在线列表
+            var inArray = isInArray(global.onlineUser, name);
+            if (!inArray) {
+                global.onlineUser.push(name);
+                //在线人数+1
+                onlineCount++;
+            }
+            //广播消息
+            io.emit('login', { onlineUser: global.onlineUser, onlineCount: global.onlineCount, user: name });
+            console.log(name + "加入了聊天室");
+        });
 
-    socket.on('join', function (userName) {
-        user = userName;
+        //监听用户退出
+        socket.on('disconnect', function () {
+            //将退出用户在在线列表删除
+            var inArray = isInArray(global.onlineUser, socket.name);
+            if (inArray) {
+                //退出用户信息
+                var name = socket.name;
+                //删除
+                deleteByValue(global.onlineUser, socket.name);
+                //在线人数-1
+                onlineCount--;
+                //广播消息
+                io.emit('logout', { onlineUser: global.onlineUser, onlineCount: global.onlineCount, user: name });
+                console.log(name + "退出了聊天室");
+            }
+        });
 
-        // 将用户昵称加入房间名单中
-        if (!roomInfo[roomID]) {
-            roomInfo[roomID] = [];
-        }
-        roomInfo[roomID].push(user);
+        //监听用户发布聊天内容
+        socket.on('message', function (clientMessage) {
+            //向所有客户端广播发布的消息
+            io.emit('message', clientMessage);
+            console.log(clientMessage.name + '说：' + clientMessage.content);
+        });
+    }
+    else {
+        // 获取请求建立socket连接的url
+        // 如: http://localhost:3000/room/room_1, roomID为room_1
+        var splited = url.split('/');
+        var roomID = splited[splited.length - 1];   // 获取房间ID
+        console.log("socket room id", roomID);
+        var user = '';
 
-        socket.join(roomID);    // 加入房间
-        // 通知房间内人员
-        socketIO.to(roomID).emit('sys', user + '加入了房间', roomInfo[roomID]);
-        console.log(user + '加入了' + roomID);
-    });
+        socket.on('join', function (userName) {
+            user = userName;
 
-    socket.on('leave', function () {
-        socket.emit('roomdisconnect');
-    });
+            // 将用户昵称加入房间名单中
+            if (global.roomInfo[roomID] == undefined) {
+                global.roomInfo[roomID] = [];
+                global.roomInfo[roomID].push(user);
+            }
+            else {
+                if (global.roomInfo[roomID].indexOf(user) == -1) {
+                    global.roomInfo[roomID].push(user);
+                }
+            }
 
-    socket.on('roomdisconnect', function () {
-        // 从房间名单中移除
-        var index = roomInfo[roomID].indexOf(user);
-        if (index !== -1) {
-            roomInfo[roomID].splice(index, 1);
-        }
+            console.log("socket roomInfo", global.roomInfo);
+            console.log("socket roomInfo room id", global.roomInfo[roomID]);
 
-        socket.leave(roomID);    // 退出房间
-        socketIO.to(roomID).emit('sys', user + '退出了房间', roomInfo[roomID]);
-        console.log(user + '退出了' + roomID);
-    });
+            socket.join(roomID);    // 加入房间
+            // 通知房间内人员
+            io.to(roomID).emit('sys', user + '加入了房间', global.roomInfo[roomID],'join');
+            console.log(user + '加入了' + roomID);
+        });
 
-    // 接收用户消息,发送相应的房间
-    socket.on('message', function (msg) {
-        // 验证如果用户不在房间内则不给发送
-        if (roomInfo[roomID].indexOf(user) === -1) {
-            return false;
-        }
-        socketIO.to(roomID).emit('msg', user, msg);
-    });
+        socket.on('leave', function () {
+            socket.emit('roomdisconnect');
+        });
+
+        socket.on('roomdisconnect', function () {
+            // 从房间名单中移除
+            var index = global.roomInfo[roomID].indexOf(user);
+            if (index !== -1) {
+                global.roomInfo[roomID].splice(index, 1);
+            }
+
+            socket.leave(roomID);    // 退出房间
+            io.to(roomID).emit('sys', user + '退出了房间', global.roomInfo[roomID],'leave');
+            console.log(user + '退出了' + roomID);
+        });
+
+        // 接收用户消息,发送相应的房间
+        socket.on('roommessage', function (msg) {
+            // 验证如果用户不在房间内则不给发送
+            if (global.roomInfo[roomID].indexOf(user) === -1) {
+                return false;
+            }
+            io.to(roomID).emit('msg', user, msg);
+        });
+    }
 });
 
 

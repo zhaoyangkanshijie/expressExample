@@ -14,7 +14,7 @@ router.route('/').get(function (req, res) {
     else {
         res.redirect('/login');
     }
-    res.render('roomchat', { 'roomID': 'x', 'users': ['a', 'b'] });
+    res.render('roomchat');
 }).post(function (req, res) {
 
 });
@@ -31,15 +31,27 @@ router.route('/:name').get(function (req, res) {
         res.redirect('/login');
     }
 
-    var roomID = req.params.roomID;
-    res.render('room', { 'roomID': roomID, 'users': global.roomInfo[roomID]});
+    var roomID = req.params.name;
+    //if (global.roomInfo[roomID] == undefined) {
+    //    global.roomInfo[roomID] = [];
+    //    global.roomInfo[roomID].push(name);
+    //}
+    //else {
+    //    if (global.roomInfo[roomID].indexOf(name) == -1) {
+    //        global.roomInfo[roomID].push(name);
+    //    }
+    //}
+
+    //console.log("after check",roomID);
+    //console.log("after check",global.roomInfo[roomID]);
+    res.render('room', { 'name': name, 'roomID': roomID });
 }).post(function (req, res) {
 
 });
 
 router.param('name', function (req, res, next, name) {
     // 对name进行验证或其他处理……
-    console.log(name);
+    console.log("check room name",name);
     var reg = /^room_[0-9]+[1-9]*$/;
     var ok = reg.test(name);
     if (ok) {
