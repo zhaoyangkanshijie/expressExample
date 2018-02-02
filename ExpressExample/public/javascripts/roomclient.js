@@ -24,7 +24,7 @@
                 socket.emit('join', username);
 
                 // 监听消息
-                socket.on('msg', function (username, msg) {
+                socket.on('msg', function (msg) {
                     var message = '' +
                         '<div class="message">' +
                         '  <span class="user">' + username + ': </span>' +
@@ -36,11 +36,11 @@
                 });
 
                 // 监听系统消息
-                socket.on('sys', function (sysMsg, users, action) {
+                socket.on('sys', function (sysMsg, users) {
                     var message = '<div class="sysMsg">' + sysMsg + '</div>';
                     $('#msglog').append(message);
-                    $('#count').text(users.length);
-                    $('#users').text(users);
+                    $('#count').html(users.length);
+                    $('#users').html(users);
                 });
 
                 // 发送消息
@@ -51,21 +51,22 @@
                         $(this).val('');
 
                         socket.send(msg);
+
                     }
                 });
 
                 // 退出房间
                 $('#joinOrLeave').click(function () {
-                    if ($(this).text() === '退出房间') {
-                        $(this).text('进入房间');
-                        socket.emit('leave');
-                        var msg = '你已经退出了房间,重新发言请点击"进入房间"';
-                        $('#msglog').append('<div class="sysMsg">' + msg + '</div>');
-                    } else {
-                        $(this).text('退出房间');
-                        socket.emit('join', username);
-                    }
-
+                    //if ($(this).text() === '退出房间') {
+                    //    $(this).text('进入房间');
+                    //    socket.emit('leave');
+                    //    var msg = '你已经退出了房间,重新发言请点击"进入房间"';
+                    //    $('#msglog').append('<div class="sysMsg">' + msg + '</div>');
+                    //} else {
+                    //    $(this).text('退出房间');
+                    //    socket.emit('join', username);
+                    //}
+                    window.close();
                 });
             }
             else {

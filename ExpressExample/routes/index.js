@@ -133,13 +133,16 @@ router.route('/getname2').get(function (req, res) {
     }
     
     if (global.roomInfo[roomID] == undefined) {
+        console.log("ajax", "undefined");
         res.send(name);
     }
     else {
         if (global.roomInfo[roomID].indexOf(name) != -1) {
+            console.log("ajax", "have name");
             res.send("");
         }
         else {
+            console.log("ajax", "no name");
             res.send(name);
         }
     }

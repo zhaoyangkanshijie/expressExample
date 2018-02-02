@@ -51,9 +51,10 @@ router.route('/:name').get(function (req, res) {
 
 router.param('name', function (req, res, next, name) {
     // 对name进行验证或其他处理……
-    console.log("check room name",name);
+    //console.log("check room name",name);
     var reg = /^room_[0-9]+[1-9]*$/;
     var ok = reg.test(name);
+    console.log("ok?", ok);
     if (ok) {
         next();
     }
