@@ -33,14 +33,25 @@
     <Compile Include="public\bootstrap-3.3.7-dist\js\bootstrap.js" />
     <Compile Include="public\bootstrap-3.3.7-dist\js\bootstrap.min.js" />
     <Compile Include="public\bootstrap-3.3.7-dist\js\npm.js" />
+    <Compile Include="public\javascripts\client.js" />
     <Compile Include="public\javascripts\jquery-3.3.1.js" />
-    <Compile Include="public\javascripts\jsonp.js">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="public\javascripts\jsonp.js" />
+    <Compile Include="public\javascripts\roomclient.js" />
+    <Compile Include="public\javascripts\socket.io.js" />
+    <Compile Include="public\javascripts\uploadImages.js" />
+    <Compile Include="public\newchat\javascripts\chat.js" />
+    <Compile Include="public\newchat\javascripts\client.js" />
+    <Compile Include="public\newchat\javascripts\jquery.min.js" />
+    <Compile Include="public\newchat\javascripts\sco.message.js" />
+    <Compile Include="public\newchat\js\messenger-theme-flat.js" />
+    <Compile Include="public\newchat\js\messenger-theme-future.js" />
+    <Compile Include="public\newchat\js\messenger.js" />
+    <Compile Include="public\newchat\js\messenger.min.js" />
+    <Compile Include="routes\chat.js" />
     <Compile Include="routes\index.js" />
-    <Compile Include="routes\sql.js">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="routes\roomchat.js" />
+    <Compile Include="routes\sql.js" />
+    <Compile Include="routes\upload.js" />
     <Compile Include="routes\users.js" />
     <Content Include="package.json" />
     <Content Include="public\bootstrap-3.3.7-dist\css\bootstrap-theme.css" />
@@ -56,15 +67,40 @@
     <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="public\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="public\newchat\css\messenger-spinner.css" />
+    <Content Include="public\newchat\css\messenger-theme-air.css" />
+    <Content Include="public\newchat\css\messenger-theme-block.css" />
+    <Content Include="public\newchat\css\messenger-theme-flat.css" />
+    <Content Include="public\newchat\css\messenger-theme-future.css" />
+    <Content Include="public\newchat\css\messenger-theme-ice.css" />
+    <Content Include="public\newchat\css\messenger.css" />
+    <Content Include="public\newchat\images\1.jpg" />
+    <Content Include="public\newchat\images\2.jpg" />
+    <Content Include="public\newchat\images\3.jpg" />
+    <Content Include="public\newchat\images\4.jpg" />
+    <Content Include="public\newchat\images\5.jpg" />
+    <Content Include="public\newchat\images\bg.png" />
+    <Content Include="public\newchat\images\bq.png" />
+    <Content Include="public\newchat\images\favicon.ico" />
+    <Content Include="public\newchat\images\jt.jpg" />
+    <Content Include="public\newchat\images\ui.jpg" />
+    <Content Include="public\newchat\music\msg.wav" />
+    <Content Include="public\newchat\stylesheets\main.css" />
+    <Content Include="public\newchat\stylesheets\message.css" />
+    <Content Include="public\newchat\stylesheets\sco.message.css" />
+    <Content Include="public\newchat\stylesheets\scojs.css" />
+    <Content Include="public\newchat\stylesheets\style.css" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
+    <Content Include="views\chat.pug" />
+    <Content Include="views\error.pug" />
     <Content Include="views\index.pug" />
     <Content Include="views\layout.pug" />
-    <Content Include="views\error.pug" />
     <Content Include="views\login.pug" />
-    <Content Include="views\register.pug">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="views\newchat.pug" />
+    <Content Include="views\register.pug" />
+    <Content Include="views\room.pug" />
+    <Content Include="views\roomchat.pug" />
     <Content Include="views\upload.pug" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +111,13 @@
     <Folder Include="public\bootstrap-3.3.7-dist\js\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
+    <Folder Include="public\newchat\" />
+    <Folder Include="public\newchat\css\" />
+    <Folder Include="public\newchat\images\" />
+    <Folder Include="public\newchat\javascripts\" />
+    <Folder Include="public\newchat\js\" />
+    <Folder Include="public\newchat\music\" />
+    <Folder Include="public\newchat\stylesheets\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="views\" />
