@@ -15,8 +15,8 @@ window.onload = function () {
         success: function (username) {
             if (username) {
                 console.log(username);
-                //连接socket后端服务器
-                var socket = io.connect("ws://localhost:3000", { 'force new connection': false });
+                //连接socket后端服务器(登录本地3000端口，会导致异地通信失效)
+                var socket = io.connect(/*"ws://localhost:3000", { 'force new connection': false }*/);
                 //通知用户有用户登录
                 socket.emit('login', username);
                 //监听新用户登录
