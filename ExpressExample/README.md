@@ -1,8 +1,11 @@
-﻿# ExpressExample
+node app
+3000端口
+
+# ExpressExample
 
 0f4a@cf9bu5#6h&
 111
-
+//加密通信用到的函数
 function encrypt(str, pwd) {
     if(str == '') {
         return '';
