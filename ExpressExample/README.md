@@ -1,6 +1,6 @@
 # ExpressExample
 
-node app
+node app <br>
 浏览器：localhost：3000
 
 ## 首页 （/）
@@ -29,14 +29,15 @@ node app
 websocket
 * connection 提示用户加入，显示在线列表
 * disconnect 提示用户退出
-* message 广播信息，加密通信
+* message 广播信息，加密通信,可防抓包窃听
 
 其它
 * 为传图方便，开放跨域攻击，没过滤内容
 * 由于会出现加解密乱码，故舍弃自定义进制加密法
+* 用户名：0f4a@cf9bu5#6h&
+* 密码：111
 
-用户名：0f4a@cf9bu5#6h&
-密码：111
+```javascript
 //加密通信用到的函数（在控制台输入）
 function encrypt(str, pwd) {
     if(str == '') {
@@ -128,6 +129,7 @@ function decrypt(str, pwd) {
     }
     return decodeURIComponent(encStr);
 }
+```
 
 ## 多人聊天室 （/roomchat） 未完成
 
