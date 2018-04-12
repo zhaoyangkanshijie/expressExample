@@ -93,3 +93,13 @@ function decrypt(str, pwd) {
     }
     return decodeURIComponent(encStr);
 }
+
+function html2Escape(sHtml) {
+ return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+}
+
+
+<script>window.location="http://baidu.com"</script>
+
+
+

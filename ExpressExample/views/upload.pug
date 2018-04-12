@@ -2,10 +2,13 @@
 
 block title
     title upload
+    link(rel='stylesheet', href='/stylesheets/upload.css')
 
 block content
+
+    //测试图片上传
     form(action="/upload",method="post",id="uploadForm" enctype="multipart/form-data")
-        input(type="file",name="uploadFile",id="uploadFile") 
+        input#uploadFile(type="file",name="uploadFile") 
         br
         input(type="button",value="submit",onclick="uploadByForm();")
 
@@ -14,4 +17,25 @@ block content
     div#uploadImg
         img#image(alt="")
 
+
+    //测试上传进度条和上传中断
+    form(action="/upload/progress",method="post",id="progressForm" enctype="multipart/form-data")
+        input#progressFile(type="file",name="myfile") 
+        br
+        //input(type="submit",value="submit")
+        input(type="button",value="submit",onclick="XMLHttpRequestProgress();")
+
+    button#break break
+
+    div.progress
+        div.bar
+        div.percent 0%
+
+    div#time
+
+    div#status
+
+    input#breakFile(type="text",name="break",value="0") 
+
+    script(src='/javascripts/jquery.form.js')
     script(src='/javascripts/uploadImages.js')
