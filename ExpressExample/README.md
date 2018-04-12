@@ -1,8 +1,44 @@
-﻿# ExpressExample
+# ExpressExample
 
-0f4a@cf9bu5#6h&
-111
+node app <br>
+浏览器：localhost：3000
 
+## 首页 （/）
+
+根据session，显示p Hello 名字，没登录，名字为visitor
+
+## 登录 （/login）
+
+连接数据库，校验登录信息。<br>
+其中，密码通过时间进行md5加密。<br>
+登录后记录session，需要session秘钥和中间件。
+
+## 注册 （/register）
+
+连接数据库。<br>
+密码通过时间进行md5加密。<br>
+注册后记录session。
+
+## 获取姓名 （/getname）ajax
+
+获取session姓名
+
+## 聊天室 （/chat）
+
+检查用户名<br>
+websocket
+* connection 提示用户加入，显示在线列表
+* disconnect 提示用户退出
+* message 广播信息，加密通信,可防抓包窃听
+
+其它
+* 为传图方便，开放跨域攻击，没过滤内容
+* 由于会出现加解密乱码，故舍弃自定义进制加密法
+* 用户名：0f4a@cf9bu5#6h&
+* 密码：111
+
+```javascript
+//加密通信用到的函数（在控制台输入）
 function encrypt(str, pwd) {
     if(str == '') {
         return '';
@@ -93,6 +129,7 @@ function decrypt(str, pwd) {
     }
     return decodeURIComponent(encStr);
 }
+<<<<<<< HEAD
 
 function html2Escape(sHtml) {
  return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
@@ -102,4 +139,15 @@ function html2Escape(sHtml) {
 <script>window.location="http://baidu.com"</script>
 
 
+=======
+```
+
+## 多人聊天室 （/roomchat） 未完成
+
+
+## 上传 （/upload）
+
+* 上传图片，完成后直接显示
+* 上传文件，显示进度、速度，可中断
+>>>>>>> 928be20096f4e7958effd37f10d5c6e658e23b5f
 

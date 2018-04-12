@@ -88,6 +88,12 @@ function XMLHttpRequestProgress() {
 
         var form = new FormData(); // FormData 对象
         form.append(name, fileObj); // 文件对象
+        //只有上传文件才需要中断，表单太快，中断没意义
+        //formData.append(name, value);
+        //formData.append(name, value, filename);
+        //formData.append('username', 'Chris');
+        //formData.append('userpic', myFileInput.files[0], 'chris.jpg');
+        //formData.append('userpic[]', myFileInput.files[1], 'chris2.jpg');
 
         xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
         xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
