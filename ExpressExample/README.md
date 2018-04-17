@@ -149,5 +149,6 @@ function html2Escape(sHtml) {
 
 * 上传图片，完成后直接显示
 * 上传文件，显示进度、速度，可中断
->>>>>>> 928be20096f4e7958effd37f10d5c6e658e23b5f
+
+
 
