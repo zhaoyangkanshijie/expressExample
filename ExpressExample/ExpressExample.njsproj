@@ -35,6 +35,9 @@
     <Compile Include="public\bootstrap-3.3.7-dist\js\npm.js" />
     <Compile Include="public\javascripts\client.js" />
     <Compile Include="public\javascripts\jquery-3.3.1.js" />
+    <Compile Include="public\javascripts\jquery.form.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="public\javascripts\jsonp.js" />
     <Compile Include="public\javascripts\roomclient.js" />
     <Compile Include="public\javascripts\socket.io.js" />
@@ -90,7 +93,12 @@
     <Content Include="public\newchat\stylesheets\sco.message.css" />
     <Content Include="public\newchat\stylesheets\scojs.css" />
     <Content Include="public\newchat\stylesheets\style.css" />
+    <Content Include="public\stylesheets\chat.css" />
     <Content Include="public\stylesheets\main.css" />
+    <Content Include="public\stylesheets\roomchat.css" />
+    <Content Include="public\stylesheets\upload.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
     <Content Include="views\chat.pug" />
     <Content Include="views\error.pug" />
@@ -118,6 +126,7 @@
     <Folder Include="public\newchat\js\" />
     <Folder Include="public\newchat\music\" />
     <Folder Include="public\newchat\stylesheets\" />
+    <Folder Include="public\file\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="views\" />
